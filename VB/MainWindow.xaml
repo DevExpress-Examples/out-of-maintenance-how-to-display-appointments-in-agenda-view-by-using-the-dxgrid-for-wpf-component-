@@ -1,0 +1,82 @@
+﻿<dx:DXWindow
+    x:Class="AgendaViewDemo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:dxsch="http://schemas.devexpress.com/winfx/2008/xaml/scheduler"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:localview="clr-namespace:AgendaViewDemo.Views"
+    xmlns:local="clr-namespace:AgendaViewDemo"
+    Title="MainWindow" Height="768" Width="1024"
+    >
+    <Window.DataContext>
+        <local:CustomObjects></local:CustomObjects>
+    </Window.DataContext>
+    <Grid>
+        <dxwui:FlipView Name="flipView1">
+            <localview:AgendaView OwnerScheduler="{Binding ElementName=schedulerControl}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="250"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <dxsch:SchedulerControl Name="schedulerControl" 
+                                        Start="{x:Static sys:DateTime.Now}"
+                                        GroupType="Resource"
+                                        PopupMenuShowing="schedulerControl_PopupMenuShowing"
+                                        QueryWorkTime="schedulerControl_QueryWorkTime">
+                    <dxsch:SchedulerControl.Storage>
+                        <dxsch:SchedulerStorage>
+                            <dxsch:SchedulerStorage.AppointmentStorage>
+                                <dxsch:AppointmentStorage DataSource="{Binding Path=Appointments}">
+                                    <dxsch:AppointmentStorage.Mappings>
+                                        <dxsch:AppointmentMapping
+                                            Start="StartTime"
+                                            End="EndTime"
+                                            Subject="Subject"
+                                            AllDay="AllDay"
+                                            Description="Description"
+                                            Label="Label"
+                                            Location="Location"
+                                            RecurrenceInfo="RecurrenceInfo"
+                                            ReminderInfo="ReminderInfo"
+                                            ResourceId="OwnerId"
+                                            Status="Status"
+                                            Type="EventType"/>
+                                    </dxsch:AppointmentStorage.Mappings>
+                                </dxsch:AppointmentStorage>
+                            </dxsch:SchedulerStorage.AppointmentStorage>
+                            <dxsch:SchedulerStorage.ResourceStorage>
+                                <dxsch:ResourceStorage DataSource="{Binding Path=Resources}">
+                                    <dxsch:ResourceStorage.Mappings>
+                                        <dxsch:ResourceMapping 
+                                            Id="ResID"
+                                            Caption="Name"
+                                            Image="ResImage"/>
+                                    </dxsch:ResourceStorage.Mappings>
+                                </dxsch:ResourceStorage>
+                            </dxsch:SchedulerStorage.ResourceStorage>
+                        </dxsch:SchedulerStorage>
+                    </dxsch:SchedulerControl.Storage>
+                    <dxsch:SchedulerControl.FullWeekView>
+                        <dxsch:FullWeekView Enabled="True"/>
+                    </dxsch:SchedulerControl.FullWeekView>
+                    <dxsch:SchedulerControl.WeekView>
+                        <dxsch:WeekView Enabled="False"/>
+                    </dxsch:SchedulerControl.WeekView>
+                </dxsch:SchedulerControl>
+                <dxe:DateNavigator Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <dxe:DateNavigator.StyleSettings>
+                        <dxsch:SchedulerDateNavigatorStyleSettings SchedulerControl="{Binding ElementName=schedulerControl}">
+                        </dxsch:SchedulerDateNavigatorStyleSettings>
+                    </dxe:DateNavigator.StyleSettings>
+                </dxe:DateNavigator>
+            </Grid>
+        </dxwui:FlipView>
+    </Grid>
+</dx:DXWindow>

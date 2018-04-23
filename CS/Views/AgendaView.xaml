@@ -1,0 +1,168 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+             xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui" 
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"  
+             xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"  
+             xmlns:dxsch="http://schemas.devexpress.com/winfx/2008/xaml/scheduler" 
+             xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+             xmlns:local="clr-namespace:AgendaViewDemo.Views"
+             x:Name="AgendaViewControl" x:Class="AgendaViewDemo.Views.AgendaView"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="800" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Loaded="OnLoaded">
+    <UserControl.Resources>
+        <local:ImageToBitmapImageConverter x:Key="imageConverter"/>
+        <local:ColorToBrushConverter x:Key="colorConverter"/>
+        <local:IntToStringConverter x:Key="IntToStringConverter"/>
+        <DataTemplate x:Key="resourceItemTemplate">
+            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" ></RowDefinition>
+                    <RowDefinition Height="100"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock HorizontalAlignment="Center" TextAlignment="Center" Text="{Binding Path=Caption}">
+                </TextBlock>
+                <Image Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding Path=Image, Converter={StaticResource imageConverter}}">
+                </Image>
+            </Grid>
+        </DataTemplate>
+
+        <Style x:Key="{dxgt:GroupRowThemeKey ResourceKey=ExpandButtonStyle, IsThemeIndependent=True}"
+               TargetType="{x:Type dxc:ToggleStateButton}">
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <dxe:ListBoxEdit Name="lbResources" AllowItemHighlighting="False" ItemTemplate="{StaticResource resourceItemTemplate}" SelectedIndexChanged="OnListBoxSelectedIndexChanged">
+            <dxe:ListBoxEdit.ItemContainerStyle>
+                <Style TargetType="dxe:ListBoxEditItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                </Style>
+            </dxe:ListBoxEdit.ItemContainerStyle>
+        </dxe:ListBoxEdit>
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="4"/>
+        <dxg:GridControl x:Name="gridControlAppointments" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                             AutoExpandAllGroups="True"
+                             CustomRowFilter="OnCustomRowFilter" 
+                             CustomUnboundColumnData="OnCustomUnboundColumnData"
+                             SelectionMode="Row"
+                         >
+            <dxg:GridControl.Resources>
+                <DataTemplate x:Key="groupTemplate">
+                    <TextBlock Text="{Binding Path=AgendaDate, StringFormat=dd (dddd) - MMMM - yyyy}"/>
+                </DataTemplate>
+            </dxg:GridControl.Resources>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn Name="gridColumnStatus" FieldName="AgendaStatus" AllowEditing="False"  Width="20">
+                    <dxg:GridColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border Width="16" Height="16" Background="{Binding RowData.Row.AgendaStatus.Brush}" BorderThickness="1" BorderBrush="Black"/>
+                        </DataTemplate>
+                    </dxg:GridColumn.CellTemplate>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="gridColumnRecurring" 
+                                UnboundType="Object" 
+                                Width="20" 
+                                Header="" 
+                                AllowEditing="False" 
+                                AllowSorting="False" 
+                                AllowGrouping="False" 
+                                AllowColumnFiltering="False">
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:ImageEditSettings ShowMenu="False"/>
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="gridColumnReminder" 
+                                UnboundType="Object" 
+                                Width="20" 
+                                Header="" 
+                                AllowEditing="False" 
+                                AllowSorting="False" 
+                                AllowGrouping="False" 
+                                AllowAutoFilter="False" 
+                                AllowColumnFiltering="False">
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:ImageEditSettings ShowMenu="False"/>
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn Name="gridColumnSubject" FieldName="AgendaSubject" Header="Subject"/>
+                <dxg:GridColumn Name="gridColumnDuration" FieldName="AgendaDuration" Header="Duration">
+                    <dxg:GridColumn.CellStyle>
+                        <Style BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle, IsThemeIndependent=True}}" TargetType="{x:Type dxg:LightweightCellEditor}">
+                            <Setter Property="TextBlock.FontWeight" Value="Bold"/>
+                        </Style>
+                    </dxg:GridColumn.CellStyle>
+                </dxg:GridColumn>
+                <dxg:GridColumn Name="gridColumnLocation" FieldName="AgendaLocation" Header="Location"/>
+                <dxg:GridColumn Name="gridColumnAgendaDate" FieldName="AgendaDate" SortOrder="Ascending" GroupIndex="0">
+                    <dxg:GridColumn.GroupValueTemplate>
+                        <DataTemplate>
+                            <dxe:TextEdit EditValue="{Binding Value}" Mask="dd (dddd) - MMMM - yyyy" MaskType="DateTime" MaskUseAsDisplayFormat="True" EditMode="InplaceInactive" FontFamily="Tahoma" FontSize="16"/>
+                        </DataTemplate>
+                    </dxg:GridColumn.GroupValueTemplate>
+                </dxg:GridColumn>
+            </dxg:GridControl.Columns>
+            <dxg:GridControl.View>
+                <dxg:TableView x:Name="gridViewAppointments" 
+                               AutoWidth="True"
+                               AllowPerPixelScrolling="True" 
+                               NavigationStyle="Row"
+                               RowDetailsVisibilityMode="Visible"
+                               ShowColumnHeaders="False" 
+                               ShowIndicator="False"
+                               ShowGroupPanel="False"
+                               FocusedRowChanged="OnFocusedRowChanged"
+                               RowDoubleClick="gridViewAppointments_RowDoubleClick">
+                    <dxg:TableView.RowDetailsTemplate>
+                        <DataTemplate>
+                            <Border Background="White">
+                                <TextBlock Margin="0,10,0,10" Text="{Binding Row.AgendaDescription}" FontFamily="Tahoma" FontSize="12" Foreground="Blue" FontWeight="Bold" TextDecorations="Underline"/>
+                            </Border>
+                        </DataTemplate>
+                    </dxg:TableView.RowDetailsTemplate>
+                    <dxb:BarManager.DXContextMenu>
+                        <dxb:PopupMenu>
+                            <dxb:BarButtonItem Content="Open appointment" ItemClick="OnOpenItemClick" IsVisible="{Binding Path=Parent.PlacementTarget.DataContext.IsAppointmentSelected, RelativeSource={RelativeSource Self}}"/>
+                            <dxb:BarButtonItem Content="Delete appointment" ItemClick="OnDeleteItemClick" Glyph="/Resources/Delete.png" IsVisible="{Binding Path=Parent.PlacementTarget.DataContext.IsAppointmentSelected, RelativeSource={RelativeSource Self}}"/>
+                            <dxb:BarItemSeparator IsVisible="{Binding Path=Parent.PlacementTarget.DataContext.IsAppointmentSelected, RelativeSource={RelativeSource Self}}"></dxb:BarItemSeparator>
+                            <dxb:BarButtonItem Content="Go to the next month" ItemClick="OnNextMonthItemClick" Glyph="/Resources/NextArrow.png"/>
+                            <dxb:BarButtonItem Content="Go to the previous month" ItemClick="OnPrevMonthItemClick" Glyph="/Resources/PrevArrow.png"/>
+                            <dxb:BarButtonItem Content="Go to the specific date" ItemClick="OnGotoDateItemClick"/>
+                            <dxb:BarItemSeparator/>
+                            <dxb:BarSubItem Content="Change view to">
+                                <dxb:BarButtonItem Content="Day View" ItemClick="OnDayViewItemClick" Glyph="/Resources/DayView.png"/>
+                                <dxb:BarButtonItem Content="WorkWeek View" ItemClick="OnWorkWeekViewItemClick" Glyph="/Resources/WorkWeekView.png"/>
+                                <dxb:BarButtonItem Content="Week View" ItemClick="OnWeekViewItemClick" Glyph="/Resources/WeekView.png"/>
+                                <dxb:BarButtonItem Content="Month View" ItemClick="bbiMonthView_ItemClick" Glyph="/Resources/MonthView.png"/>
+                                <dxb:BarButtonItem Content="Timeline View" ItemClick="OnTimelineViewItemClick" Glyph="/Resources/TimelineView.png"/>
+                            </dxb:BarSubItem>
+                        </dxb:PopupMenu>
+                    </dxb:BarManager.DXContextMenu>
+                    <dxg:TableView.RowStyle>
+                        <Style TargetType="dxg:RowControl">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=SelectionState}" Value="None">
+                                    <Setter Property="dxg:GridRowContent.Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="{Binding Row.AgendaLabel, TargetNullValue=Transparent}"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </dxg:TableView.RowStyle>
+                </dxg:TableView>
+            </dxg:GridControl.View>
+        </dxg:GridControl>
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2" Text="{Binding ElementName=gridControlAppointments, Path=ItemsSource.Count, Converter={StaticResource IntToStringConverter}}" IsHitTestVisible="False"/>
+    </Grid>
+</UserControl>
