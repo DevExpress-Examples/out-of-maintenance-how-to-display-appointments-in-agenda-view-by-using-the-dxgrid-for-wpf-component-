@@ -1,3 +1,15 @@
+<!-- default file list -->
+*Files to look at*:
+
+* [AgendaViewDataGenerator.cs](./CS/AgendaViewDataGenerator.cs) (VB: [AgendaViewDataGenerator.vb](./VB/AgendaViewDataGenerator.vb))
+* [CustomObjectsProvider.cs](./CS/CustomObjectsProvider.cs) (VB: [CustomObjectsProvider.vb](./VB/CustomObjectsProvider.vb))
+* [GoToDateDialog.xaml](./CS/GoToDateDialog.xaml) (VB: [GoToDateDialog.xaml.vb](./VB/GoToDateDialog.xaml.vb))
+* [GoToDateDialog.xaml.cs](./CS/GoToDateDialog.xaml.cs) (VB: [GoToDateDialog.xaml.vb](./VB/GoToDateDialog.xaml.vb))
+* [MainWindow.xaml](./CS/MainWindow.xaml) (VB: [MainWindow.xaml.vb](./VB/MainWindow.xaml.vb))
+* [MainWindow.xaml.cs](./CS/MainWindow.xaml.cs) (VB: [MainWindow.xaml.vb](./VB/MainWindow.xaml.vb))
+* [AgendaView.xaml](./CS/Views/AgendaView.xaml) (VB: [AgendaView.xaml.vb](./VB/Views/AgendaView.xaml.vb))
+* [AgendaView.xaml.cs](./CS/Views/AgendaView.xaml.cs) (VB: [AgendaView.xaml.vb](./VB/Views/AgendaView.xaml.vb))
+<!-- default file list end -->
 # How to display appointments in Agenda View by using the DXGrid for WPF component
 
 
