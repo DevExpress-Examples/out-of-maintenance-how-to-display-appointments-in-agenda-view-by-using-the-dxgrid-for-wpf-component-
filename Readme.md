@@ -4,10 +4,10 @@
 * [AgendaViewDataGenerator.cs](./CS/AgendaViewDataGenerator.cs) (VB: [AgendaViewDataGenerator.vb](./VB/MainApplication/AgendaViewDataGenerator.vb))
 * [CustomObjectsProvider.cs](./CS/CustomObjectsProvider.cs) (VB: [CustomObjectsProvider.vb](./VB/MainApplication/CustomObjectsProvider.vb))
 * [GoToDateDialog.xaml](./CS/GoToDateDialog.xaml) (VB: [GoToDateDialog.xaml](./VB/MainApplication/GoToDateDialog.xaml))
-* [GoToDateDialog.xaml.cs](./CS/GoToDateDialog.xaml.cs) (VB: [GoToDateDialog.xaml](./VB/MainApplication/GoToDateDialog.xaml))
-* [MainWindow.xaml](./CS/MainWindow.xaml) (VB: [MainWindow.xaml.vb](./VB/MainApplication/MainWindow.xaml.vb))
+* [GoToDateDialog.xaml.cs](./CS/GoToDateDialog.xaml.cs) (VB: [GoToDateDialog.xaml.vb](./VB/MainApplication/GoToDateDialog.xaml.vb))
+* [MainWindow.xaml](./CS/MainWindow.xaml) (VB: [MainWindow.xaml](./VB/MainApplication/MainWindow.xaml))
 * [MainWindow.xaml.cs](./CS/MainWindow.xaml.cs) (VB: [MainWindow.xaml.vb](./VB/MainApplication/MainWindow.xaml.vb))
-* [AgendaView.xaml](./CS/Views/AgendaView.xaml) (VB: [AgendaView.xaml.vb](./VB/MainApplication/Views/AgendaView.xaml.vb))
+* [AgendaView.xaml](./CS/Views/AgendaView.xaml) (VB: [AgendaView.xaml](./VB/MainApplication/Views/AgendaView.xaml))
 * [AgendaView.xaml.cs](./CS/Views/AgendaView.xaml.cs) (VB: [AgendaView.xaml.vb](./VB/MainApplication/Views/AgendaView.xaml.vb))
 <!-- default file list end -->
 # How to display appointments in Agenda View by using the DXGrid for WPF component
